@@ -20,7 +20,11 @@ def convert_single_file(heic_path, jpg_path, output_quality):
     """
     try:
         with Image.open(heic_path) as image:
+            ti_c = os.path.getctime(heic_path)
+            ti_m = os.path.getmtime(heic_path)
             image.save(jpg_path, "JPEG", quality=output_quality)
+            os.path.setctime(jpg_path)
+            os.path.setmtime(jpg_path)
         return heic_path, True  # Successful conversion
     except (UnidentifiedImageError, FileNotFoundError, OSError) as e:
         logging.error(f"Error converting '{heic_path}': {e}")
